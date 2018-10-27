@@ -1,4 +1,22 @@
-﻿# https://gallery.azure.com/";
+﻿#
+# Usage:
+#
+# Open this in PowerShell ISE and click the Run button. That's it!
+# Once finished, the script will write a .csv file into the working directory
+# 
+# There are multiple sets of data which are stored but not written to disk:
+#
+# $dtresults - abbreviated version of what is written to .csv
+# $artHash - hash table of all artifacts found
+# $catHash - hash table of all categories found
+# $portHash - hast table of all ports; does not include port ranges like '137-139'
+#
+# Note: It's normal for the script to throw a ton of errors; this is because not all JSON files
+#       contain the objects we're looking for. Be patient, it WILL complete.
+#
+# Additional endpoints are below; unsure if they're reachable via normal methods
+#
+# https://gallery.azure.com/";
 # https://gallery.chinacloudapi.cn/";
 # https://gallery.usgovcloudapi.net/";
 # https://gallery.cloudapi.de/";
