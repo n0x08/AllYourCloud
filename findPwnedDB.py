@@ -1,8 +1,8 @@
-# !/usr/bin/env python
+#!/usr/bin/env python
 # findPwnedDB.py
 #
-# Last update: 6/15/2018
-# Added: REDIS support
+# Last update: 12/19/2018
+# Added: Docker XMR mining flags; additional MongoDB DB
 #
 # Dependencies:
 # - shodan
@@ -17,13 +17,14 @@
 #       OR
 #       shodan download --limit -1 USA_DB country:US product:MongoDB
 # 2. Run the tool on the file:
-#        python findPwnedDB.py USA_DB.json.gz
+#        ./findPwnedDB.py USA_DB.json.gz
 #
 from sys import argv
 import json
 from shodan.helpers import iterate_files, get_ip
 
-pwnedDBs = ['Backup1', 'Backup2', 'Backup3', 'crackit', 'trojan1', 'trojan2', 'trojan3', 'trojan4', 'Readme', 'WARNING', 
+pwnedDBs = ['timonmat/xmr-stak-cpu', 'arayan/monero-miner', 'abafaeeee/monero-miner', 'kannix/monero-miner', 'Warn', 
+'Backup1', 'Backup2', 'Backup3', 'crackit', 'trojan1', 'trojan2', 'trojan3', 'trojan4', 'Readme', 'WARNING', 
 'PLEASE_READ_ME_XYZ', 'jacpos', 'jackpos', 'jackposv1', 'jackposv2', 'jackposprivate12', 'alina', 'topkek112', 'README', 'WRITE_ME', 
 'WE_HAVE_YOUR_DATA', 'your_data_has_been_backed_up', 'REQUEST_YOUR_DATA', 'DB_HAS_BEEN_DROPPED', 'Warning', 'Attention', 
 'send_bitcoin_to_retrieve_the_data', 'DATA_HAS_BEEN_BACKED_UP', 'REQUEST_ME', 'CONTACTME', 'BACKUP_DB', 'db_has_been_backed_up', 
@@ -66,6 +67,11 @@ for banner in iterate_files(argv[1:]):
             for db in data['data']:
                 if db in pwnedDBs:
                     print('{}:{}:{}:{}'.format(ip, org, db, product))
+        elif product == "Docker":
+            data = banner['docker']['Containers']
+            for db in data:
+                if db['Image'] in pwnedDBs:
+                    print('{}:{}:{}:{}'.format(ip, org, db['Image'], product))
         else:
             data = banner['product']
     except:
